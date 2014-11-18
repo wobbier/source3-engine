@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30324.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "As1Demo", "As1Demo\As1Demo.vcxproj", "{96AE653A-ECDB-4AA4-88A4-204D1A7B8576}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2107CA2D-2677-4259-902D-EDCDBFF7E9F7} = {2107CA2D-2677-4259-902D-EDCDBFF7E9F7}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Source3", "Source3\Source3.vcxproj", "{2107CA2D-2677-4259-902D-EDCDBFF7E9F7}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HalfLife3", "HalfLife3\HalfLife3.vcxproj", "{33529D34-FCD7-493A-8584-05EF55C16EC4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2107CA2D-2677-4259-902D-EDCDBFF7E9F7} = {2107CA2D-2677-4259-902D-EDCDBFF7E9F7}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{96AE653A-ECDB-4AA4-88A4-204D1A7B8576}.Debug|Win32.ActiveCfg = Debug|Win32
+		{96AE653A-ECDB-4AA4-88A4-204D1A7B8576}.Debug|Win32.Build.0 = Debug|Win32
+		{96AE653A-ECDB-4AA4-88A4-204D1A7B8576}.Release|Win32.ActiveCfg = Release|Win32
+		{96AE653A-ECDB-4AA4-88A4-204D1A7B8576}.Release|Win32.Build.0 = Release|Win32
+		{2107CA2D-2677-4259-902D-EDCDBFF7E9F7}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2107CA2D-2677-4259-902D-EDCDBFF7E9F7}.Debug|Win32.Build.0 = Debug|Win32
+		{2107CA2D-2677-4259-902D-EDCDBFF7E9F7}.Release|Win32.ActiveCfg = Release|Win32
+		{2107CA2D-2677-4259-902D-EDCDBFF7E9F7}.Release|Win32.Build.0 = Release|Win32
+		{33529D34-FCD7-493A-8584-05EF55C16EC4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{33529D34-FCD7-493A-8584-05EF55C16EC4}.Debug|Win32.Build.0 = Debug|Win32
+		{33529D34-FCD7-493A-8584-05EF55C16EC4}.Release|Win32.ActiveCfg = Release|Win32
+		{33529D34-FCD7-493A-8584-05EF55C16EC4}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
