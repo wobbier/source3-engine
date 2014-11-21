@@ -1,6 +1,7 @@
 #include "Scene.h"
 #include <list>
 
+
 // Keycode
 #include <Common/Base/keycode.cxx>
 #include <Common/Base/Config/hkProductFeatures.cxx>
@@ -89,7 +90,7 @@ void Scene::InitMemory()
 
 	HK_CONFIG_SIMD == HK_CONFIG_SIMD_ENABLED;
 	// Flush all denormal/subnormal numbers to zero.
-	// Operations on denormals are very slow, 
+	// Operations on denormals are very slow,
 
 	// up to 100 times slower than normal numbers.
 	_MM_SET_FLUSH_ZERO_MODE(_MM_FLUSH_ZERO_ON);
@@ -99,7 +100,6 @@ void Scene::InitMemory()
 	// Allocate 0.5MB of physics solver buffer.
 	hkMemoryRouter* memoryRouter = hkMemoryInitUtil::initDefault(hkMallocAllocator::m_defaultMallocAllocator, hkMemorySystem::FrameInfo(500 * 1024));
 	hkBaseSystem::init(memoryRouter, errorReport);
-
 
 	// We can cap the number of threads used - here we use the maximum for whatever multithreaded platform we are running on. This variable is
 	// set in the following code sections.
@@ -132,14 +132,12 @@ void Scene::InitPhysicalWorld()
 {
 	g_pWorldInfo.m_simulationType = hkpWorldCinfo::SIMULATION_TYPE_MULTITHREADED;
 	g_pWorldInfo.m_broadPhaseBorderBehaviour = hkpWorldCinfo::BROADPHASE_BORDER_REMOVE_ENTITY;
-	g_pWorldInfo.m_gravity.set(0, 0, 0);
+	g_pWorldInfo.m_gravity.set(0, -9.8f, 0);
 	g_pWorld = new hkpWorld(g_pWorldInfo);
 	g_pWorld->m_wantDeactivation = false;
 	g_pWorld->markForWrite();
 	hkpAgentRegisterUtil::registerAllAgents(g_pWorld->getCollisionDispatcher());
 	g_pWorld->registerWithJobQueue(g_pJobQueue);
-
-
 }
 
 void Scene::InitVDB()
@@ -220,6 +218,7 @@ void Scene::AddEntity(Entity* entity)
 #undef HK_FEATURE_PRODUCT_BEHAVIOR
 #undef HK_FEATURE_PRODUCT_PHYSICS_2012
 #undef HK_FEATURE_PRODUCT_PHYSICS
+
 #define HK_EXCLUDE_FEATURE_SerializeDeprecatedPre700
 #define HK_EXCLUDE_FEATURE_RegisterVersionPatches
 #define HK_EXCLUDE_FEATURE_RegisterReflectedClasses

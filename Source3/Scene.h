@@ -30,7 +30,6 @@ static void HK_CALL errorReport(const char* msg, void* userContext)
 	printf("%s", msg);
 }
 
-
 class Scene {
 private:
 public:
@@ -46,7 +45,6 @@ public:
 	void Render(Renderer* renderer);
 
 	void AddEntity(Entity* entity);
-
 
 	bool g_bVdbEnabled;
 	hkCpuThreadPool* g_pThreadPool;

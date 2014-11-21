@@ -14,13 +14,13 @@ void Source3::Start() {
 	while (!window->ShouldClose()) {
 		// Check and call events
 		glfwPollEvents();
+		float time = Time::Get()->GetTimeInMilliseconds();
+		Time::Get()->deltaTime = (time <= 0.0f || time >= 0.3) ? 0.0001f : time;
 		// Update our engine
 		Update();
 		glClearColor(1.0f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		Render(renderer);
-		float time = Time::Get()->GetTimeInMilliseconds();
-		Time::Get()->deltaTime = (time <= 0.0f) ? 0.0001f : time;
 		// Swap the buffers
 		glfwSwapBuffers(window->window);
 	}

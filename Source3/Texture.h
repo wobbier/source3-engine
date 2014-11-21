@@ -4,4 +4,3 @@ public:
 	Texture();
 	~Texture();
 };
-

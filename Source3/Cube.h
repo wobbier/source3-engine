@@ -1,12 +1,12 @@
 #pragma once
 #include "Entity.h"
+#include <Common/Base/Math/hkMath.h>
+
 class Cube : public Entity
 {
 public:
-	Cube(const char* _name);
+	Cube(hkVector4& size, const char* _name = "Cube");
 	~Cube();
 	virtual void Update() override;
 	virtual void Render(Renderer* renderer) override;
-	void SetSize(glm::vec3 scale);
 };
-

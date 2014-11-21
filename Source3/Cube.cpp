@@ -1,20 +1,21 @@
 #include "Cube.h"
-
-Cube::Cube(const char* _name) : Entity(_name)
+Cube::Cube(hkVector4& size, const char* _name) : Entity(_name)
 {
-	hkpBoxShape* sphere = new hkpBoxShape(hkVector4(0.5f, 0.5f, 0.5f, 1));
+	float scaler = .45f;
+	hkVector4 vec = hkVector4(size(0) * scaler, size(1) * scaler, size(2) * scaler);
+	transform.scale = glm::vec3(size(0), size(1), size(2));
+	hkpBoxShape* box = new hkpBoxShape(vec);
 	// convex radius for spheres is exactly the sphere radius
 	hkpRigidBodyCinfo rigidBodyInfo;
-	rigidBodyInfo.m_shape = sphere;
+	rigidBodyInfo.m_shape = box;
 	rigidBodyInfo.m_motionType = hkpMotion::MOTION_DYNAMIC;
-	hkpInertiaTensorComputer::setShapeVolumeMassProperties(sphere, 1.0f, rigidBodyInfo);
-	rigidBodyInfo.m_position.set(0.0f, 0.6f, 0.0f);
+	hkpInertiaTensorComputer::setShapeVolumeMassProperties(box, 1.0f, rigidBodyInfo);
+	rigidBodyInfo.m_position.set(0.0f, 0.0f, 0.0f);
 	rigidBodyInfo.m_friction = 1.0f;
 	rigidBodyInfo.m_restitution = 0.2f;
 	mRigidbody = new hkpRigidBody(rigidBodyInfo);
-	sphere->removeReference();
+	box->removeReference();
 }
-
 
 Cube::~Cube()
 {
@@ -28,9 +29,4 @@ void Cube::Update()
 void Cube::Render(Renderer* renderer)
 {
 	renderer->RenderCube(transform.position, transform.rotation, transform.scale);
-}
-
-void Cube::SetSize(glm::vec3 scale)
-{
-
 }

@@ -19,9 +19,8 @@ public:
 	//virtual void Update(float deltaTime) override;
 	virtual void Update();
 	virtual void Render(Renderer* renderer);
-	void SetPosition();
-	void SetRotation();
-	void SetScale();
+	void SetPosition(glm::vec3 pos);
+	void SetRotation(glm::quat rot);
+	void SetScale(glm::vec3 scale);
 	Entity* GetChildById(int i);
-
 };
