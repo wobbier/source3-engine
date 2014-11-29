@@ -2,8 +2,7 @@
 #include "Entity.h"
 #include "Cube.h"
 #include "Sphere.h"
-float x = 0;
-float y = 0;
+#include "Player.h"
 
 Entity* cube;
 Entity* square;
@@ -11,6 +10,7 @@ Cube* cubeNew;
 Cube* otherCube;
 Sphere* sphere;
 Cube* ground;
+Player* player;
 
 HL3Game::HL3Game() : Source3() {
 }
@@ -37,18 +37,19 @@ void HL3Game::Initialize() {
 	currentScene->AddEntity(otherCube);
 
 	ground = new Cube(hkVector4(4, 0.5f, 4), "Ground");
-	ground->SetPosition(glm::vec3(0,-2,0));
+	ground->SetPosition(glm::vec3(0, -2, 0));
 	ground->mRigidbody->setMotionType(hkpMotion::MOTION_FIXED);
 	currentScene->AddEntity(ground);
 
 	sphere = new Sphere(1.0f);
-	sphere->SetPosition(glm::vec3(0,2,0));
+	sphere->SetPosition(glm::vec3(0, 2, 0));
 	currentScene->AddEntity(sphere);
+	player = new Player("Gordon Freeman");
+	player->SetPosition(glm::vec3(0, 3, 0));
+	currentScene->AddEntity(player);
 }
 
 void HL3Game::Update() {
-	x += 0.05f;
-	y -= 0.1f;
 	currentScene->Update();
 }
 

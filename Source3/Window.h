@@ -4,12 +4,13 @@ using namespace std;
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include "Input.h"
+
 class Window {
 private:
 public:
 	GLFWwindow* window;
-	void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
-	}
+
 	Window(char* title, int width, int height) {
 		// Init GLFW
 		glfwInit();
@@ -21,8 +22,11 @@ public:
 		window = glfwCreateWindow(width, height, title, nullptr, nullptr); // Windowed
 		glfwMakeContextCurrent(window);
 
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
 		// Set the required callback functions
-		//glfwSetKeyCallback(window, key_callback);
+		glfwSetKeyCallback(window, &Input::KeyCallback);
+		glfwSetCursorPosCallback(window, &Input::MouseCallback);
 	}
 
 	~Window() {

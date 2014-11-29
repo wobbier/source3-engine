@@ -1,6 +1,5 @@
 #include "Sphere.h"
-Sphere::Sphere(hkReal radius, const char* _name) : Entity(_name)
-{
+Sphere::Sphere(hkReal radius, const char* _name) : Entity(_name) {
 	float scaler = .45f;
 	hkpSphereShape* sphere = new hkpSphereShape(radius*scaler);
 	// convex radius for spheres is exactly the sphere radius
@@ -15,16 +14,13 @@ Sphere::Sphere(hkReal radius, const char* _name) : Entity(_name)
 	sphere->removeReference();
 }
 
-Sphere::~Sphere()
-{
+Sphere::~Sphere() {
 }
 
-void Sphere::Update()
-{
+void Sphere::Update() {
 	Entity::Update();
 }
 
-void Sphere::Render(Renderer* renderer)
-{
-	renderer->RenderCube(transform.position, transform.rotation, transform.scale);
+void Sphere::Render(Renderer* renderer) {
+	renderer->RenderCube();
 }

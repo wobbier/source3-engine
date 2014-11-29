@@ -63,7 +63,7 @@
       <AdditionalOptions>/ENTRY:"mainCRTStartup" %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32d.lib;SOIL.lib;hkBase.lib;hkCompat.lib;hkGeometryUtilities.lib;hkInternal.lib;hkSerialize.lib;hkVisualize.lib;hkaInternal.lib;hkaAnimation.lib;hkaPhysics2012Bridge.lib;hkcdInternal.lib;hkpConstraint.lib;hkpConstraintSolver.lib;hkpCollide.lib;hkpDynamics.lib;hkpInternal.lib;hkpUtilities.lib;hkpVehicle.lib;hkcdCollide.lib;hkSceneData.lib;hkImageUtilities.lib</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32d.lib;SOIL.lib;hkBase.lib;hkInternal.lib;hkVisualize.lib;hkaInternal.lib;hkcdInternal.lib;hkpConstraint.lib;hkpConstraintSolver.lib;hkpCollide.lib;hkpDynamics.lib;hkpInternal.lib;hkcdCollide.lib</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>..\ThirdParty\SOIL\lib;..\ThirdParty\GLFW\lib;..\ThirdParty\GLEW\lib;..\ThirdParty\Havok\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -86,6 +86,11 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Cube.h" />
+    <ClInclude Include="Frustum.h" />
+    <ClInclude Include="HavokCore.h" />
+    <ClInclude Include="Input.h" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Plane.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Time.h" />
@@ -97,13 +102,17 @@
     <ClInclude Include="Node.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Scene.h" />
-    <ClInclude Include="SceneGraph.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Source3.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="Frustum.cpp" />
+    <ClCompile Include="HavokCore.cpp" />
+    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="Plane.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Time.cpp" />
@@ -115,7 +124,6 @@
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="SceneGraph.cpp" />
     <ClCompile Include="Source3.cpp" />
   </ItemGroup>
   <ItemGroup>

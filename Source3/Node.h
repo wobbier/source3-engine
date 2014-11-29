@@ -7,7 +7,7 @@ public:
 	glm::vec3 position;
 	glm::quat rotation;
 	glm::vec3 scale;
-	Transform(){
+	Transform() {
 		position = glm::vec3(0, 0, 0);
 		rotation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
 		scale = glm::vec3(1, 1, 1);

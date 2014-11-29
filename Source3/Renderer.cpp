@@ -1,7 +1,5 @@
 #include "Renderer.h"
 Renderer::Renderer() {
-	camera = new Camera(glm::vec3(0.0f, 0.0f, 10.0f));
-
 	// Initialize GLEW to setup the OpenGL Function pointers
 	glewExperimental = GL_TRUE;
 	glewInit();
@@ -130,6 +128,22 @@ Renderer::Renderer() {
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0); // Unbind texture when done, so we won't accidentally mess up our texture.
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	float line[6] = {
+		0, 0, 0,
+		0, 0, 0
+	};
+	glBindVertexArray(VAO[Line]);
+
+	glBindBuffer(GL_ARRAY_BUFFER, VBO[Line]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(line), line, GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO[Line]);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(line), line, GL_STATIC_DRAW);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+	glEnableVertexAttribArray(0);
+
+	glBindVertexArray(0); // Unbind VAO (it's always a good thing to unbind any buffer to prevent strange bugs), remember: do NOT unbind the VBO, keep it bound to this VAO
 
 	// Get the uniform locations
 	modelLoc = glGetUniformLocation(mainShader->Program, "model");
@@ -143,9 +157,9 @@ void Renderer::RenderSquare(float x, float y, float width, float height) {
 	mainShader->Use();
 	// Create camera transformation
 	glm::mat4 view;
-	view = camera->GetViewMatrix();
+	view = mCamera->GetViewMatrix();
 	glm::mat4 projection;
-	projection = glm::perspective(camera->Zoom, (float)800.0f / (float)600.0f, 0.1f, 1000.0f);
+	projection = glm::perspective(mCamera->Zoom, (float)800.0f / (float)600.0f, 0.1f, 1000.0f);
 	// Pass the matrices to the shader
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 	glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
@@ -162,15 +176,23 @@ void Renderer::RenderSquare(float x, float y, float width, float height) {
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0); // Unbind texture when done, so we won't accidentily mess up our texture.
 }
-void Renderer::RenderCube(glm::vec3 position, glm::quat rotation, glm::vec3 scale) {
+hkMatrix4f glmToHK(glm::mat4 vec) {
+	hkMatrix4f mat;
+	for (int i = 0; i < 4; ++i) {
+		for (int j = 0; j < 4; ++j) {
+			mat(i, j) = vec[j][i];
+		}
+	}
+	return mat;
+}
+void Renderer::RenderCube() {
 	mainShader->Use();
 	// Create camera transformation
-	glm::mat4 view;
-	view = camera->GetViewMatrix();
-	glm::mat4 projection;
-	projection = glm::perspective(camera->Zoom, (float)800.0f / (float)600.0f, 0.1f, 1000.0f);
+	glm::mat4 view = mCamera->GetViewMatrix();
+	glm::mat4 projection = glm::perspective(mCamera->Zoom, (float)800.0f / (float)600.0f, 0.1f, 1000.0f);
+	hkMatrix4f vec = glmToHK(view);
 	// Pass the matrices to the shader
-	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &vec(0, 0));// glm::value_ptr(view));
 	glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
 	glBindVertexArray(VAO[Cube]);
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
@@ -188,6 +210,28 @@ void Renderer::RenderCube(glm::vec3 position, glm::quat rotation, glm::vec3 scal
 
 void Renderer::SetModelView(glm::mat4 transform) {
 	this->transform = transform;
+}
+
+void Renderer::RenderLine(const hkVector4& from, const hkVector4& to) {
+	float line[6] = {
+		from(0), from(1), from(2),
+		to(0), to(1), to(2)
+	};
+	glBindVertexArray(VAO[Line]); // setup for the layout of LineSegment_t
+	glBindBuffer(GL_ARRAY_BUFFER, VBO[Line]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(line) / 2 * 2, &line[0], GL_DYNAMIC_DRAW);
+	glDrawArrays(GL_LINES, 0, 2);
+}
+
+void Renderer::RenderLine(const glm::vec3& from, const glm::vec3& to) {
+	float line[6] = {
+		from.x, from.y, from.z,
+		to.x, to.y, to.z
+	};
+	glBindVertexArray(VAO[Line]); // setup for the layout of LineSegment_t
+	glBindBuffer(GL_ARRAY_BUFFER, VBO[Line]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(line) / 2 * 2, &line[0], GL_DYNAMIC_DRAW);
+	glDrawArrays(GL_LINES, 0, 2);
 }
 
 //void RendererGL::RenderModel(const Model& model) {

@@ -1,6 +1,6 @@
 #include "Entity.h"
 
-Entity::Entity(const char* _name, Node* parent) : Node(_name, parent){
+Entity::Entity(const char* _name, Node* parent) : Node(_name, parent) {
 }
 
 Entity::~Entity() {
@@ -23,23 +23,20 @@ void Entity::Render(Renderer* renderer) {
 	//renderer->RenderSquare(transform.position.x, transform.position.y, transform.scale.x, transform.scale.y);
 }
 
-Entity* Entity::GetChildById(int i)
-{
+Entity* Entity::GetChildById(int i) {
 	return (Entity*)(mChildren[i]);
 }
 
-void Entity::SetPosition(glm::vec3 pos)
-{
+void Entity::SetPosition(glm::vec3 pos) {
 	transform.position = pos;
-	if (mRigidbody != nullptr){
+	if (mRigidbody != nullptr) {
 		mRigidbody->setPosition(hkVector4(pos.x, pos.y, pos.z, 1));
 	}
 }
 
-void Entity::SetScale(glm::vec3 scale)
-{
+void Entity::SetScale(glm::vec3 scale) {
 	transform.scale = scale;
-	if (mRigidbody != nullptr){
+	if (mRigidbody != nullptr) {
 		float scaler = .45f;
 		hkVector4 vec = hkVector4(scale.x * scaler, scale.y * scaler, scale.z * scaler);
 		hkpBoxShape* box = new hkpBoxShape(vec);

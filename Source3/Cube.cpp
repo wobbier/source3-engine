@@ -1,6 +1,5 @@
 #include "Cube.h"
-Cube::Cube(hkVector4& size, const char* _name) : Entity(_name)
-{
+Cube::Cube(hkVector4& size, const char* _name) : Entity(_name) {
 	float scaler = .45f;
 	hkVector4 vec = hkVector4(size(0) * scaler, size(1) * scaler, size(2) * scaler);
 	transform.scale = glm::vec3(size(0), size(1), size(2));
@@ -17,16 +16,13 @@ Cube::Cube(hkVector4& size, const char* _name) : Entity(_name)
 	box->removeReference();
 }
 
-Cube::~Cube()
-{
+Cube::~Cube() {
 }
 
-void Cube::Update()
-{
+void Cube::Update() {
 	Entity::Update();
 }
 
-void Cube::Render(Renderer* renderer)
-{
-	renderer->RenderCube(transform.position, transform.rotation, transform.scale);
+void Cube::Render(Renderer* renderer) {
+	renderer->RenderCube();
 }

@@ -53,7 +53,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;HK_CONFIG_SIMD=1;_CRT_SECURE_NO_WARNINGS;HK_DEBUG_MULTI_THREADING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;HK_CONFIG_SIMD=1;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>..\Source3\;..\ThirdParty\SOIL\include;..\ThirdParty\glm\;..\ThirdParty\GLFW\include;..\ThirdParty\GLEW\include;..\ThirdParty\Havok\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
@@ -63,10 +63,10 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\Debug\;..\ThirdParty\SOIL\lib;..\ThirdParty\GLFW\lib;..\ThirdParty\GLEW\lib;..\ThirdParty\Havok\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Source3.lib;glew32d.lib;glfw3.lib;SOIL.lib;hkBase.lib;hkCompat.lib;hkGeometryUtilities.lib;hkInternal.lib;hkSerialize.lib;hkcdInternal.lib;hkVisualize.lib;hkaInternal.lib;hkaAnimation.lib;hkaPhysics2012Bridge.lib;hkpConstraint.lib;hkpConstraintSolver.lib;hkpCollide.lib;hkpDynamics.lib;hkpInternal.lib;hkpUtilities.lib;hkpVehicle.lib;hkcdCollide.lib;hkSceneData.lib;hkImageUtilities.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32d.lib;SOIL.lib;Source3.lib;hkBase.lib;hkCompat.lib;hkGeometryUtilities.lib;hkInternal.lib;hkSerialize.lib;hkVisualize.lib;hkaInternal.lib;hkaAnimation.lib;hkaPhysics2012Bridge.lib;hkcdInternal.lib;hkpConstraint.lib;hkpConstraintSolver.lib;hkpCollide.lib;hkpDynamics.lib;hkpInternal.lib;hkpUtilities.lib;hkcdCollide.lib;hkSceneData.lib;hkImageUtilities.lib;hkpVehicle.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -90,9 +90,11 @@
   <ItemGroup>
     <ClCompile Include="HL3Game.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HL3Game.h" />
+    <ClInclude Include="Player.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

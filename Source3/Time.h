@@ -90,7 +90,6 @@ public:
 	// Qualifier: Check if the cpu is ready to begin.
 	//************************************
 	bool Ready();
-
 	//************************************
 	// Method:    Ready
 	// FullName:  Clock::Ready
