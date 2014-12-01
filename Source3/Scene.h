@@ -4,6 +4,7 @@
 #include "Entity.h"
 #include "gtx\quaternion.hpp"
 #include "HavokCore.h"
+#include "Skybox.h"
 
 class Scene {
 private:
@@ -11,6 +12,7 @@ public:
 	Entity* root;
 	Camera* currentCamera;
 	HavokCore* mHavokCore;
+	Skybox* skybox;
 	Scene();
 	~Scene();
 	void LoadScene(const char* filename);

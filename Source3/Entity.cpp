@@ -44,3 +44,8 @@ void Entity::SetScale(glm::vec3 scale) {
 		box->removeReference();
 	}
 }
+
+void Entity::SetRotation(glm::quat rot) {
+	transform.rotation = rot;
+}
+

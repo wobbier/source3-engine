@@ -44,7 +44,9 @@ void HL3Game::Initialize() {
 	sphere = new Sphere(1.0f);
 	sphere->SetPosition(glm::vec3(0, 2, 0));
 	currentScene->AddEntity(sphere);
+
 	player = new Player("Gordon Freeman");
+	player->SetScale(glm::vec3(0.1f, 0.1f, 0.1f));
 	player->SetPosition(glm::vec3(0, 3, 0));
 	currentScene->AddEntity(player);
 }

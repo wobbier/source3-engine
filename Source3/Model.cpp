@@ -1,211 +1,129 @@
-/*
-* .obj Model Loader
-* By: Mitchell Andrews (Wobbier) / Robert Evola (RelishZombie)
-* November 11, 2013
-* Loads a .obj file into faces and vertices and then renders the model.
-*
 #include "Model.h"
-int stringPos;
-std::string tempString;
 
-Model::Model(const char * filename) {
-init(filename);
-}
-Model::Model(const char * filename, const char * texture) {
-init(filename, texture);
-}
-Model::~Model() {
-delete[] vertices;
-delete[] faces;
+Model::Model(std::string path) {
+	this->loadModel(path);
 }
 
-void Model::init(const char * filename) {
-int tempVerts = 0;
-int tempFaces = 0;
-int tempNorms = 0;
-int tempTexCoords = 0;
-std::ifstream fileStream;
-fileStream.open(filename);
-if (fileStream.is_open()) {
-while (std::getline(fileStream, currentString)) {
-switch (currentString[1]) {
-case 'n':
-tempNorms++;
-supportsNorms = true;
-continue;
-case 't':
-tempTexCoords++;
-supportsTextures = true;
-continue;
-}
-switch (currentString[0]) {
-case 'v':
-tempVerts++;
-std::cout << "Read Vert" << std::endl;
-break;
-case 'f':
-tempFaces++;
-std::cout << "Read Face" << std::endl;
-break;
-}
-}
-vertices = new Vector3<float>[tempVerts];
-faces = new Vector3<int>[tempFaces];
-normals = new Vector3<float>[tempNorms];
-normPointers = new int[tempFaces];
-texturePointers = new Vector3<int>[tempFaces];
-textureCoords = new Vector2<float>[tempTexCoords];
-tempVerts = 0;
-tempFaces = 0;
-tempNorms = 0;
-tempTexCoords = 0;
-fileStream.clear();
-fileStream.seekg(0, std::ios::beg);
-while (std::getline(fileStream, currentString)) {
-switch (currentString[1]) {
-case 'n':
-addNorm(tempNorms);
-tempNorms++;
-continue;
-case 't':
-addTextureCoord(tempTexCoords);
-tempTexCoords++;
-continue;
-}
-switch (currentString[0]) {
-case 'v':
-addPoint(tempVerts);
-tempVerts++;
-break;
-case 'f':
-addFace(tempFaces);
-tempFaces++;
-break;
-}
-}
-fileStream.close();
-fileLoaded = true;
-vertSize = tempVerts;
-faceSize = tempFaces;
-//std::cout << texturePointers[0].z;
-//std::cout << textureCoords[texturePointers[0].x].x << textureCoords[texturePointers[0].x].y << std::endl;
-//std::cout << textureCoords[texturePointers[0].y].x << textureCoords[texturePointers[0].y].y << std::endl;
-//std::cout << textureCoords[texturePointers[0].z].x << textureCoords[texturePointers[0].z].y << std::endl;
-//std::cout << vertices[faces[0].x].x;
-}
+void Model::Draw(Shader shader) {
+	for (GLuint i = 0; i < this->meshes.size(); i++)
+		this->meshes[i].Draw(shader);
 }
 
-void Model::init(const char * filename, const char * textureName) {
-init(filename);
-Image* image = loadBMP(textureName);
-texture = loadTexture(image);
-delete image;
-//texture = LoadTexture(filename, 1024, 1024);
+void Model::loadModel(string path) {
+	// Read file via ASSIMP
+	Assimp::Importer importer;
+	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
+	// Check for errors
+	if (!scene || scene->mFlags == AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
+	{
+		cout << "ERROR::ASSIMP:: " << importer.GetErrorString() << endl;
+		return;
+	}
+	// Retrieve the directory path of the filepath
+	this->directory = path.substr(0, path.find_last_of('/'));
+
+	// Process ASSIMP's root node recursively
+	this->processNode(scene->mRootNode, scene);
 }
 
-void Model::Render() {
-glEnable(GL_TEXTURE_2D);
-glBindTexture(GL_TEXTURE_2D, texture);
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-glPushMatrix();
-//std::cout << "render";
-glRotatef(-90, 0, 1, 0);
-if (fileLoaded) {
-for (int i = 0; i < faceSize; ++i) {
-glBegin(GL_POLYGON);
-if (supportsNorms)
-glNormal3f(normals[normPointers[i]].x, normals[normPointers[i]].y, normals[normPointers[i]].z);
-
-if (supportsTextures)
-glTexCoord2f(textureCoords[texturePointers[i].x].x, textureCoords[texturePointers[i].x].y);
-glVertex3f(vertices[faces[i].x].x, vertices[faces[i].x].y, vertices[faces[i].x].z);
-
-if (supportsTextures)
-glTexCoord2f(textureCoords[texturePointers[i].y].x, textureCoords[texturePointers[i].y].y);
-glVertex3f(vertices[faces[i].y].x, vertices[faces[i].y].y, vertices[faces[i].y].z);
-
-if (supportsTextures)
-glTexCoord2f(textureCoords[texturePointers[i].z].x, textureCoords[texturePointers[i].z].y);
-glVertex3f(vertices[faces[i].z].x, vertices[faces[i].z].y, vertices[faces[i].z].z);
-glEnd();
-}
-}
-glPopMatrix();
-glDisable(GL_TEXTURE_2D);
+void Model::processNode(aiNode* node, const aiScene* scene) {
+	// Process each mesh located at the current node
+	for (GLuint i = 0; i < node->mNumMeshes; i++) {
+		// The node object only contains indices to index the actual objects in the scene. 
+		// The scene contains all the data, node is just to keep stuff organized (like relations between nodes).
+		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+		this->meshes.push_back(this->processMesh(mesh, scene));
+	}
+	// After we've processed all of the meshes (if any) we then recursively process each of the children nodes
+	for (GLuint i = 0; i < node->mNumChildren; i++) {
+		this->processNode(node->mChildren[i], scene);
+	}
 }
 
-void Model::addPoint(int currentVert) {
-for (int i = 2; i >= 0; --i) {
-stringPos = currentString.find_last_of(" ");
-tempString = currentString.substr(stringPos + 1);
-if (i == 0) vertices[currentVert].x = std::stof(tempString.c_str());
-if (i == 1) vertices[currentVert].y = std::stof(tempString.c_str());
-if (i == 2) vertices[currentVert].z = std::stof(tempString.c_str());
-currentString = currentString.erase(stringPos, currentString.length());
-}
+Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene) {
+	// Data to fill
+	vector<Vertex> vertices;
+	vector<GLuint> indices;
+	vector<Texture> textures;
+
+	// Walk through each of the mesh's vertices
+	for (GLuint i = 0; i < mesh->mNumVertices; i++) {
+		Vertex vertex;
+		glm::vec3 vector; // We declare a placeholder vector since assimp uses its own vector class that doesn't directly convert to glm's vec3 class so we transfer the data to this placeholder glm::vec3 first.
+		// Positions
+		vector.x = mesh->mVertices[i].x;
+		vector.y = mesh->mVertices[i].y;
+		vector.z = mesh->mVertices[i].z;
+		vertex.Position = vector;
+		// Normals
+		vector.x = mesh->mNormals[i].x;
+		vector.y = mesh->mNormals[i].y;
+		vector.z = mesh->mNormals[i].z;
+		vertex.Normal = vector;
+		// Texture Coordinates
+		if (mesh->mTextureCoords[0]) // Does the mesh contain texture coordinates?
+		{
+			glm::vec2 vec;
+			// A vertex can contain up to 8 different texture coordinates. We thus make the assumption that we won't 
+			// use models where a vertex can have multiple texture coordinates so we always take the first set (0).
+			vec.x = mesh->mTextureCoords[0][i].x;
+			vec.y = mesh->mTextureCoords[0][i].y;
+			vertex.TexCoords = vec;
+		}
+		else
+			vertex.TexCoords = glm::vec2(0.0f, 0.0f);
+		vertices.push_back(vertex);
+	}
+	// Now wak through each of the mesh's faces (a face is a mesh its triangle) and retrieve the corresponding vertex indices.
+	for (GLuint i = 0; i < mesh->mNumFaces; i++) {
+		aiFace face = mesh->mFaces[i];
+		// Retrieve all indices of the face and store them in the indices vector
+		for (GLuint j = 0; j < face.mNumIndices; j++)
+			indices.push_back(face.mIndices[j]);
+	}
+	// Process materials
+	if (mesh->mMaterialIndex >= 0) {
+		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+		// We assume a convention for sampler names in the shaders. Each diffuse texture should be named
+		// as 'texture_diffuseN' where N is a sequential number ranging from 1 to MAX_SAMPLER_NUMBER. 
+		// Same applies to other texture as the following list summarizes:
+		// Diffuse: texture_diffuseN
+		// Specular: texture_specularN
+		// Normal: texture_normalN
+
+		// 1. Diffuse maps
+		vector<Texture> diffuseMaps = this->loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
+		textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+		// 2. Specular maps
+		vector<Texture> specularMaps = this->loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
+		textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+	}
+
+	// Return a mesh object created from the extracted mesh data
+	return Mesh(vertices, indices, textures);
 }
 
-void Model::addFace(int currentFace) {
-for (int i = 2; i >= 0; --i) {
-if (supportsNorms) {
-stringPos = currentString.find_last_of("/");
-tempString = currentString.substr(stringPos + 1);
-normPointers[currentFace] = std::stoi(tempString.c_str()) - 1;
-if (currentString[stringPos - 1] == '/') {
-currentString = currentString.erase(stringPos - 1, currentString.length());
+vector<Texture> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName) {
+	vector<Texture> textures;
+	for (GLuint i = 0; i < mat->GetTextureCount(type); i++) {
+		aiString str;
+		mat->GetTexture(type, i, &str);
+		// Check if texture was loaded before and if so, continue to next iteration: skip loading a new texture
+		GLboolean skip = false;
+		for (GLuint j = 0; j < textures_loaded.size(); j++) {
+			if (textures_loaded[j].Path == str) {
+				textures.push_back(textures_loaded[j]);
+				skip = true; // A texture with the same filepath has already been loaded, continue to next one. (optimization)
+				break;
+			}
+		}
+		if (!skip) {   // If texture hasn't been loaded already, load it
+			Texture texture(directory + "/" + str.C_Str());
+			texture.Type = typeName;
+			texture.Path = str;
+			textures.push_back(texture);
+			this->textures_loaded.push_back(texture);  // Store it as texture loaded for entire model, to ensure we won't unnecesery load duplicate textures.
+		}
+	}
+	return textures;
 }
-else {
-currentString = currentString.erase(stringPos, currentString.length());
-stringPos = currentString.find_last_of("/");
-tempString = currentString.substr(stringPos + 1);
-if (i == 0)texturePointers[currentFace].x = std::stof(tempString.c_str()) - 1;
-if (i == 1)texturePointers[currentFace].y = std::stof(tempString.c_str()) - 1;
-if (i == 2)texturePointers[currentFace].z = std::stof(tempString.c_str()) - 1;
-currentString = currentString.erase(stringPos, currentString.length());
-}
-}
-stringPos = currentString.find_last_of(" ");
-tempString = currentString.substr(stringPos + 1);
-if (i == 0) faces[currentFace].x = std::stoi(tempString.c_str()) - 1;
-if (i == 1) faces[currentFace].y = std::stoi(tempString.c_str()) - 1;
-if (i == 2) faces[currentFace].z = std::stoi(tempString.c_str()) - 1;
-currentString = currentString.erase(stringPos, currentString.length());
-}
-}
-void Model::addNorm(int currentIndex) {
-for (int i = 2; i >= 0; --i) {
-stringPos = currentString.find_last_of(" ");
-tempString = currentString.substr(stringPos + 1);
-if (i == 0)normals[currentIndex].x = std::stof(tempString.c_str());
-if (i == 1)normals[currentIndex].y = std::stof(tempString.c_str());
-if (i == 2)normals[currentIndex].z = std::stof(tempString.c_str());
-currentString = currentString.erase(stringPos, currentString.length());
-}
-}
-void Model::addTextureCoord(int currentIndex) {
-for (int i = 0; i < 2; ++i) {
-stringPos = currentString.find_last_of(" ");
-tempString = currentString.substr(stringPos + 1);
-if (i == 1) textureCoords[currentIndex].x = std::stof(tempString.c_str());
-if (i == 0) textureCoords[currentIndex].y = std::stof(tempString.c_str());
-currentString = currentString.erase(stringPos, currentString.length());
-}
-}
-unsigned int Model::loadTexture(Image *image) {
-GLuint textureId;
-glGenTextures(1, &textureId); //Make room for our texture
-glBindTexture(GL_TEXTURE_2D, textureId); //Tell OpenGL which texture to edit
-//Map the image to the texture
-glTexImage2D(GL_TEXTURE_2D,                //Always GL_TEXTURE_2D
-0,                            //0 for now
-GL_RGB,                       //Format OpenGL uses for image
-image->width, image->height,  //Width and height
-0,                            //The border of the image
-GL_RGB, //GL_RGB, because pixels are stored in RGB format
-GL_UNSIGNED_BYTE, //GL_UNSIGNED_BYTE, because pixels are stored
-//as unsigned numbers
-image->pixels);               //The actual pixel data
-return textureId; //Returns the id of the texture
-}*/

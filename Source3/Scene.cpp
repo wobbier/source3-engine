@@ -20,6 +20,8 @@ Scene::Scene() {
 	currentCamera = new Camera(glm::vec3(0.0f, 0.0f, 10.0f));
 	mHavokCore = new HavokCore();
 	mHavokCore->InitializeHavok();
+	skybox = new Skybox();
+	skybox->LoadSkybox("Skybox/skybox");
 }
 
 Scene::~Scene() {
@@ -60,8 +62,7 @@ void Scene::Update() {
 
 std::list<Transform> modelViewStack;
 void Scene::Render(Entity* node, Renderer* renderer) {
-	if (!currentCamera->frustum->pointInFrustum(node->transform.position)
-		&& node != root) return;
+	if (!currentCamera->frustum->pointInFrustum(node->transform.position) && node != root) return;
 	modelViewStack.push_back(node->transform);
 	glm::mat4 trans;
 	for (std::list<Transform>::iterator i = modelViewStack.begin(); i != modelViewStack.end(); i++) {
@@ -80,7 +81,9 @@ void Scene::Render(Entity* node, Renderer* renderer) {
 
 void Scene::Render(Renderer* renderer) {
 	renderer->mCamera = currentCamera;
+	renderer->RenderSkybox(skybox);
 
+	// Ray test
 	//input.m_from = currentCamera->ScreenPointToRay(400, 300).m_origin;
 	hkVector4 added = currentCamera->ScreenPointToRay(400, 300).m_origin;
 	renderer->RenderLine(currentCamera->ScreenPointToRay(400, 300).m_origin, currentCamera->ScreenPointToRay(400, 300).m_direction);

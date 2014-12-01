@@ -49,7 +49,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalOptions>/D_UNICODE /DUNICODE /DWIN32 /D_WINDOWS /c %(AdditionalOptions)</AdditionalOptions>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;HK_CONFIG_SIMD=1;HK_DEBUG_MULTI_THREADING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\ThirdParty\SOIL\include;..\ThirdParty\glm\;..\ThirdParty\GLFW\include;..\ThirdParty\GLEW\include;..\ThirdParty\Havok\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\ThirdParty\Assimp\include;..\ThirdParty\SOIL\include;..\ThirdParty\glm\;..\ThirdParty\GLFW\include;..\ThirdParty\GLEW\include;..\ThirdParty\Havok\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <StringPooling>true</StringPooling>
       <MinimalRebuild>true</MinimalRebuild>
@@ -63,10 +63,10 @@
       <AdditionalOptions>/ENTRY:"mainCRTStartup" %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32d.lib;SOIL.lib;hkBase.lib;hkInternal.lib;hkVisualize.lib;hkaInternal.lib;hkcdInternal.lib;hkpConstraint.lib;hkpConstraintSolver.lib;hkpCollide.lib;hkpDynamics.lib;hkpInternal.lib;hkcdCollide.lib</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32d.lib;SOIL.lib;assimpd.lib;hkBase.lib;hkInternal.lib;hkVisualize.lib;hkaInternal.lib;hkcdInternal.lib;hkpConstraint.lib;hkpConstraintSolver.lib;hkpCollide.lib;hkpDynamics.lib;hkpInternal.lib;hkcdCollide.lib</AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>..\ThirdParty\SOIL\lib;..\ThirdParty\GLFW\lib;..\ThirdParty\GLEW\lib;..\ThirdParty\Havok\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\ThirdParty\SOIL\lib;..\ThirdParty\GLFW\lib;..\ThirdParty\GLEW\lib;..\ThirdParty\Havok\lib;..\ThirdParty\Assimp\lib32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -91,6 +91,7 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Plane.h" />
+    <ClInclude Include="Skybox.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Time.h" />
@@ -113,6 +114,7 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Plane.cpp" />
+    <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Time.cpp" />
@@ -125,6 +127,7 @@
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Source3.cpp" />
+    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shader.frag" />

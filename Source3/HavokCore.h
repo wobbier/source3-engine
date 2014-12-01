@@ -23,7 +23,7 @@
 #include <Common/Base/Container/Array/hkArray.h>
 static void HK_CALL errorReport(const char* msg, void* userContext) {
 	using namespace std;
-	printf("%s", msg);
+	printf("%s\n", msg);
 }
 
 class HavokCore {

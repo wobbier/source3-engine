@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30324.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "As1Demo", "As1Demo\As1Demo.vcxproj", "{96AE653A-ECDB-4AA4-88A4-204D1A7B8576}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -16,6 +16,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HalfLife3", "HalfLife3\Half
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Andrews-SolarSystem-Final", "Andrews-SolarSystem-Final\Andrews-SolarSystem-Final.vcxproj", "{8538A0DD-4F10-4045-80D8-00843F667C04}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2107CA2D-2677-4259-902D-EDCDBFF7E9F7} = {2107CA2D-2677-4259-902D-EDCDBFF7E9F7}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

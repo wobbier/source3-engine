@@ -47,41 +47,49 @@ Renderer::Renderer() {
 
 	// Cube
 	GLfloat cubeVerts[] = {
-		-0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
-		0.5f, -0.5f, -0.5f, 1.0f, 0.0f,
-		0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-		0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-		-0.5f, 0.5f, -0.5f, 0.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
+		// front
+		-0.5f, -0.5f, -0.5f, 1.0f, 1.0f,
+		0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+		0.5f, 0.5f, -0.5f, 0.0f, 0.0f,
 
-		-0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
-		0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
-		0.5f, 0.5f, 0.5f, 1.0f, 1.0f,
-		0.5f, 0.5f, 0.5f, 1.0f, 1.0f,
-		-0.5f, 0.5f, 0.5f, 0.0f, 1.0f,
-		-0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
+		0.5f, 0.5f, -0.5f, 0.0f, 0.0f,
+		-0.5f, 0.5f, -0.5f, 1.0f, 0.0f,
+		-0.5f, -0.5f, -0.5f, 1.0f, 1.0f,
 
+		// back
+		-0.5f, -0.5f, 0.5f, 0.0f, 1.0f,
+		0.5f, -0.5f, 0.5f, 1.0f, 1.0f,
+		0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+		0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+		-0.5f, 0.5f, 0.5f, 0.0f, 0.0f,
+		-0.5f, -0.5f, 0.5f, 0.0f, 1.0f,
+
+		// left
 		-0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-		-0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
+		-0.5f, 0.5f, -0.5f, 0.0f, 0.0f,
 		-0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
 		-0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-		-0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
+		-0.5f, -0.5f, 0.5f, 1.0f, 1.0f,
 		-0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
 
-		0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-		0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-		0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-		0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-		0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
-		0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+		//right
+		0.5f, 0.5f, 0.5f, 0.0f, 0.0f,
 
+		0.5f, 0.5f, -0.5f, 1.0f, 0.0f,//
+		0.5f, -0.5f, -0.5f, 1.0f, 1.0f,//
+		0.5f, -0.5f, -0.5f, 1.0f, 1.0f,
+
+		0.5f, -0.5f, 0.5f, 0.0f, 1.0f,
+		0.5f, 0.5f, 0.5f, 0.0f, 0.0f,//
+
+		// top
 		-0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
 		0.5f, -0.5f, -0.5f, 1.0f, 1.0f,
 		0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
 		0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
 		-0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
 		-0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-
+		 // bottom
 		-0.5f, 0.5f, -0.5f, 0.0f, 1.0f,
 		0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
 		0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
@@ -111,23 +119,8 @@ Renderer::Renderer() {
 
 	glBindVertexArray(0); // Unbind VAO (it's always a good thing to unbind any buffer to prevent strange bugs), remember: do NOT unbind the VBO, keep it bound to this VAO
 
-	// --== TEXTURE 1 == --
-	glGenTextures(1, &texture1);
-	glBindTexture(GL_TEXTURE_2D, texture1); // All upcoming GL_TEXTURE_2D operations now have effect on our texture object
-	// Set our texture parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	// Set texture filtering
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	// Load, create texture and generate mipmaps
-	int width, height;
-	unsigned char* image = SOIL_load_image("cube.png", &width, &height, 0, SOIL_LOAD_RGB);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
-	glGenerateMipmap(GL_TEXTURE_2D);
-	SOIL_free_image_data(image);
-	glBindTexture(GL_TEXTURE_2D, 0); // Unbind texture when done, so we won't accidentally mess up our texture.
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	DefaultTexture = new Texture("default.png");
+
 	float line[6] = {
 		0, 0, 0,
 		0, 0, 0
@@ -153,13 +146,13 @@ Renderer::Renderer() {
 
 Renderer::~Renderer() {
 }
+
 void Renderer::RenderSquare(float x, float y, float width, float height) {
 	mainShader->Use();
 	// Create camera transformation
 	glm::mat4 view;
 	view = mCamera->GetViewMatrix();
-	glm::mat4 projection;
-	projection = glm::perspective(mCamera->Zoom, (float)800.0f / (float)600.0f, 0.1f, 1000.0f);
+	glm::mat4 projection = glm::perspective(mCamera->Zoom, 800.0f / 600.0f, 0.1f, 1000.0f);
 	// Pass the matrices to the shader
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 	glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
@@ -170,12 +163,13 @@ void Renderer::RenderSquare(float x, float y, float width, float height) {
 	//trans = glm::scale(trans, glm::vec3(height, width, 1.0f));
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(transform));
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture1);
-	glUniform1i(glGetUniformLocation(mainShader->Program, "ourTexture1"), 0);
+	glBindTexture(GL_TEXTURE_2D, DefaultTexture->Id);
+	glUniform1i(glGetUniformLocation(mainShader->Program, "texture_diffuse"), 0);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0); // Unbind texture when done, so we won't accidentily mess up our texture.
 }
+
 hkMatrix4f glmToHK(glm::mat4 vec) {
 	hkMatrix4f mat;
 	for (int i = 0; i < 4; ++i) {
@@ -185,11 +179,12 @@ hkMatrix4f glmToHK(glm::mat4 vec) {
 	}
 	return mat;
 }
+
 void Renderer::RenderCube() {
 	mainShader->Use();
 	// Create camera transformation
 	glm::mat4 view = mCamera->GetViewMatrix();
-	glm::mat4 projection = glm::perspective(mCamera->Zoom, (float)800.0f / (float)600.0f, 0.1f, 1000.0f);
+	glm::mat4 projection = glm::perspective(mCamera->Zoom, 800.0f / 600.0f, 0.1f, 1000.0f);
 	hkMatrix4f vec = glmToHK(view);
 	// Pass the matrices to the shader
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &vec(0, 0));// glm::value_ptr(view));
@@ -201,8 +196,8 @@ void Renderer::RenderCube() {
 	//trans = glm::scale(trans, glm::vec3(height, width, 1.0f));
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(transform));
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture1);
-	glUniform1i(glGetUniformLocation(mainShader->Program, "ourTexture1"), 0);
+	glBindTexture(GL_TEXTURE_2D, DefaultTexture->Id);
+	glUniform1i(glGetUniformLocation(mainShader->Program, "texture_diffuse"), 0);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0); // Unbind texture when done, so we won't accidentily mess up our texture.
@@ -221,6 +216,7 @@ void Renderer::RenderLine(const hkVector4& from, const hkVector4& to) {
 	glBindBuffer(GL_ARRAY_BUFFER, VBO[Line]);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(line) / 2 * 2, &line[0], GL_DYNAMIC_DRAW);
 	glDrawArrays(GL_LINES, 0, 2);
+	glBindVertexArray(0);
 }
 
 void Renderer::RenderLine(const glm::vec3& from, const glm::vec3& to) {
@@ -232,7 +228,36 @@ void Renderer::RenderLine(const glm::vec3& from, const glm::vec3& to) {
 	glBindBuffer(GL_ARRAY_BUFFER, VBO[Line]);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(line) / 2 * 2, &line[0], GL_DYNAMIC_DRAW);
 	glDrawArrays(GL_LINES, 0, 2);
+	glBindVertexArray(0);
 }
 
-//void RendererGL::RenderModel(const Model& model) {
-//}
+void Renderer::RenderModel(Model* model, Shader shader) {
+	shader.Use();
+	// Create camera transformation
+	glm::mat4 view = mCamera->GetViewMatrix();
+	glm::mat4 projection = glm::perspective(mCamera->Zoom, 800.0f / 600.0f, 0.1f, 1000.0f);
+	hkMatrix4f vec = glmToHK(view);
+	// Pass the matrices to the shader
+	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &vec(0, 0));// glm::value_ptr(view));
+	glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+	glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(transform));
+	model->Draw(shader);
+}
+
+void Renderer::RenderSkybox(Skybox* skybox) {
+	mainShader->Use();
+	// Create camera transformation
+	glm::mat4 view = mCamera->GetViewMatrix();
+	glm::mat4 projection = glm::perspective(mCamera->Zoom, 800.0f / 600.0f, 0.1f, 1000.0f);
+	hkMatrix4f vec = glmToHK(view);
+	// Pass the matrices to the shader
+	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &vec(0, 0));// glm::value_ptr(view));
+	glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+	transform = glm::mat4();
+	transform = glm::translate(transform, mCamera->Position);
+	transform = glm::scale(transform, glm::vec3(1000, 1000, 1000));
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(transform));
+	glBindVertexArray(VAO[Cube]);
+	skybox->Draw(*mainShader);
+	//RenderCube();
+}

@@ -55,7 +55,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;HK_CONFIG_SIMD=1;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\Source3\;..\ThirdParty\SOIL\include;..\ThirdParty\glm\;..\ThirdParty\GLFW\include;..\ThirdParty\GLEW\include;..\ThirdParty\Havok\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\ThirdParty\Assimp\include;..\Source3\;..\ThirdParty\SOIL\include;..\ThirdParty\glm\;..\ThirdParty\GLFW\include;..\ThirdParty\GLEW\include;..\ThirdParty\Havok\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <StringPooling>true</StringPooling>
       <MinimalRebuild>true</MinimalRebuild>
@@ -65,8 +65,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\Debug\;..\ThirdParty\SOIL\lib;..\ThirdParty\GLFW\lib;..\ThirdParty\GLEW\lib;..\ThirdParty\Havok\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32d.lib;SOIL.lib;Source3.lib;hkBase.lib;hkCompat.lib;hkGeometryUtilities.lib;hkInternal.lib;hkSerialize.lib;hkVisualize.lib;hkaInternal.lib;hkaAnimation.lib;hkaPhysics2012Bridge.lib;hkcdInternal.lib;hkpConstraint.lib;hkpConstraintSolver.lib;hkpCollide.lib;hkpDynamics.lib;hkpInternal.lib;hkpUtilities.lib;hkcdCollide.lib;hkSceneData.lib;hkImageUtilities.lib;hkpVehicle.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\ThirdParty\Assimp\lib32;..\Debug\;..\ThirdParty\SOIL\lib;..\ThirdParty\GLFW\lib;..\ThirdParty\GLEW\lib;..\ThirdParty\Havok\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32d.lib;SOIL.lib;Source3.lib;assimpd.lib;hkBase.lib;hkCompat.lib;hkGeometryUtilities.lib;hkInternal.lib;hkSerialize.lib;hkVisualize.lib;hkaInternal.lib;hkaAnimation.lib;hkaPhysics2012Bridge.lib;hkcdInternal.lib;hkpConstraint.lib;hkpConstraintSolver.lib;hkpCollide.lib;hkpDynamics.lib;hkpInternal.lib;hkpUtilities.lib;hkcdCollide.lib;hkSceneData.lib;hkImageUtilities.lib;hkpVehicle.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
