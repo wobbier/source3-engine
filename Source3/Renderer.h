@@ -21,7 +21,6 @@
 
 class Renderer {
 private:
-	Shader* mainShader;
 	enum S3Shapes {
 		Square = 0,
 		Cube,
@@ -39,6 +38,8 @@ public:
 	Renderer();
 	~Renderer();
 	Camera* mCamera;
+	Shader* DefaultShader;
+	Shader* ModelShader;
 	void RenderSquare(float x, float y, float width, float height);
 	void RenderCube();
 	void SetModelView(glm::mat4 transform);

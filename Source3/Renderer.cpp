@@ -10,7 +10,8 @@ Renderer::Renderer() {
 	glEnable(GL_DEPTH_TEST);
 
 	// Build and compile our shader program
-	mainShader = new Shader("shader.vert", "shader.frag");
+	DefaultShader = new Shader("Shaders/Default.vert", "Shaders/Default.frag");
+	ModelShader = new Shader("Shaders/Model.vert", "Shaders/Model.frag");
 
 	GLfloat squareVerts[] = {
 		1.0f, 1.0f, 0.0f, 1.0f, 1.0f,	// Top Right
@@ -84,17 +85,17 @@ Renderer::Renderer() {
 
 		// top
 		-0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-		0.5f, -0.5f, -0.5f, 1.0f, 1.0f,
+		0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
 		0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
 		0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
-		-0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
+		-0.5f, -0.5f, 0.5f, 1.0f, 1.0f,
 		-0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
 		 // bottom
 		-0.5f, 0.5f, -0.5f, 0.0f, 1.0f,
-		0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
+		0.5f, 0.5f, -0.5f, 0.0f, 0.0f,
 		0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
 		0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-		-0.5f, 0.5f, 0.5f, 0.0f, 0.0f,
+		-0.5f, 0.5f, 0.5f, 1.0f, 1.0f,
 		-0.5f, 0.5f, -0.5f, 0.0f, 1.0f
 	};
 	GLuint cubeIndices[] = {  // Note that we start from 0!
@@ -139,16 +140,16 @@ Renderer::Renderer() {
 	glBindVertexArray(0); // Unbind VAO (it's always a good thing to unbind any buffer to prevent strange bugs), remember: do NOT unbind the VBO, keep it bound to this VAO
 
 	// Get the uniform locations
-	modelLoc = glGetUniformLocation(mainShader->Program, "model");
-	viewLoc = glGetUniformLocation(mainShader->Program, "view");
-	projLoc = glGetUniformLocation(mainShader->Program, "projection");
+	modelLoc = glGetUniformLocation(DefaultShader->Program, "model");
+	viewLoc = glGetUniformLocation(DefaultShader->Program, "view");
+	projLoc = glGetUniformLocation(DefaultShader->Program, "projection");
 }
 
 Renderer::~Renderer() {
 }
 
 void Renderer::RenderSquare(float x, float y, float width, float height) {
-	mainShader->Use();
+	DefaultShader->Use();
 	// Create camera transformation
 	glm::mat4 view;
 	view = mCamera->GetViewMatrix();
@@ -164,7 +165,7 @@ void Renderer::RenderSquare(float x, float y, float width, float height) {
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(transform));
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, DefaultTexture->Id);
-	glUniform1i(glGetUniformLocation(mainShader->Program, "texture_diffuse"), 0);
+	glUniform1i(glGetUniformLocation(DefaultShader->Program, "texture_diffuse"), 0);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0); // Unbind texture when done, so we won't accidentily mess up our texture.
@@ -181,7 +182,7 @@ hkMatrix4f glmToHK(glm::mat4 vec) {
 }
 
 void Renderer::RenderCube() {
-	mainShader->Use();
+	DefaultShader->Use();
 	// Create camera transformation
 	glm::mat4 view = mCamera->GetViewMatrix();
 	glm::mat4 projection = glm::perspective(mCamera->Zoom, 800.0f / 600.0f, 0.1f, 1000.0f);
@@ -197,7 +198,7 @@ void Renderer::RenderCube() {
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(transform));
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, DefaultTexture->Id);
-	glUniform1i(glGetUniformLocation(mainShader->Program, "texture_diffuse"), 0);
+	glUniform1i(glGetUniformLocation(DefaultShader->Program, "texture_diffuse"), 0);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0); // Unbind texture when done, so we won't accidentily mess up our texture.
@@ -232,7 +233,7 @@ void Renderer::RenderLine(const glm::vec3& from, const glm::vec3& to) {
 }
 
 void Renderer::RenderModel(Model* model, Shader shader) {
-	shader.Use();
+	ModelShader->Use();
 	// Create camera transformation
 	glm::mat4 view = mCamera->GetViewMatrix();
 	glm::mat4 projection = glm::perspective(mCamera->Zoom, 800.0f / 600.0f, 0.1f, 1000.0f);
@@ -245,7 +246,7 @@ void Renderer::RenderModel(Model* model, Shader shader) {
 }
 
 void Renderer::RenderSkybox(Skybox* skybox) {
-	mainShader->Use();
+	DefaultShader->Use();
 	// Create camera transformation
 	glm::mat4 view = mCamera->GetViewMatrix();
 	glm::mat4 projection = glm::perspective(mCamera->Zoom, 800.0f / 600.0f, 0.1f, 1000.0f);
@@ -258,6 +259,6 @@ void Renderer::RenderSkybox(Skybox* skybox) {
 	transform = glm::scale(transform, glm::vec3(1000, 1000, 1000));
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(transform));
 	glBindVertexArray(VAO[Cube]);
-	skybox->Draw(*mainShader);
+	skybox->Draw(*DefaultShader);
 	//RenderCube();
 }

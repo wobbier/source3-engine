@@ -49,7 +49,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalOptions>/D_UNICODE /DUNICODE /DWIN32 /D_WINDOWS /c %(AdditionalOptions)</AdditionalOptions>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;HK_CONFIG_SIMD=1;HK_DEBUG_MULTI_THREADING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\ThirdParty\Assimp\include;..\ThirdParty\SOIL\include;..\ThirdParty\glm\;..\ThirdParty\GLFW\include;..\ThirdParty\GLEW\include;..\ThirdParty\Havok\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\ThirdParty\Assimp\include;..\ThirdParty\SOIL\include;..\ThirdParty\glm\;..\ThirdParty\GLFW\include;..\ThirdParty\GLEW\include;..\ThirdParty\Havok\include;..\ThirdParty\Jsoncpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <StringPooling>true</StringPooling>
       <MinimalRebuild>true</MinimalRebuild>
@@ -63,10 +63,10 @@
       <AdditionalOptions>/ENTRY:"mainCRTStartup" %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32d.lib;SOIL.lib;assimpd.lib;hkBase.lib;hkInternal.lib;hkVisualize.lib;hkaInternal.lib;hkcdInternal.lib;hkpConstraint.lib;hkpConstraintSolver.lib;hkpCollide.lib;hkpDynamics.lib;hkpInternal.lib;hkcdCollide.lib</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32d.lib;SOIL.lib;assimpd.lib;hkBase.lib;hkInternal.lib;hkVisualize.lib;hkaInternal.lib;hkcdInternal.lib;hkpConstraint.lib;hkpConstraintSolver.lib;hkpCollide.lib;hkpDynamics.lib;hkpInternal.lib;hkcdCollide.lib;jsoncpp.lib</AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>..\ThirdParty\SOIL\lib;..\ThirdParty\GLFW\lib;..\ThirdParty\GLEW\lib;..\ThirdParty\Havok\lib;..\ThirdParty\Assimp\lib32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\ThirdParty\Jsoncpp\lib;..\ThirdParty\SOIL\lib;..\ThirdParty\GLFW\lib;..\ThirdParty\GLEW\lib;..\ThirdParty\Havok\lib;..\ThirdParty\Assimp\lib32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -85,6 +85,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Config.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="Frustum.h" />
     <ClInclude Include="HavokCore.h" />
@@ -108,6 +109,7 @@
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Config.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="HavokCore.cpp" />

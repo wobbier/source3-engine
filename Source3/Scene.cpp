@@ -15,13 +15,17 @@
 #include <Physics2012\Collide\Query\CastUtil\hkpWorldRayCastOutput.h>
 #include <Physics2012\Collide/Query/Multithreaded/RayCastQuery/hkpRayCastQueryJobs.h>
 #include <Physics2012/Collide/Query/Collector/RayCollector/hkpClosestRayHitCollector.h>
+
+#include "Config.h"
+
 Scene::Scene() {
 	root = new Entity("World");
 	currentCamera = new Camera(glm::vec3(0.0f, 0.0f, 10.0f));
 	mHavokCore = new HavokCore();
 	mHavokCore->InitializeHavok();
+	Config config = Config("Config/Default.cfg");
 	skybox = new Skybox();
-	skybox->LoadSkybox("Skybox/skybox");
+	skybox->LoadSkybox(config.GetValue("skybox"));
 }
 
 Scene::~Scene() {

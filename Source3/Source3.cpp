@@ -2,7 +2,7 @@
 #include "Time.h"
 
 Source3::Source3() {
-	window = new Window("Source 3", 800, 600);
+	window = new Window("Source 3 Engine - Mitchell Andrews 2014", 800, 600);
 	renderer = new Renderer();
 	currentScene = new Scene();
 	bIsRunning = true;
