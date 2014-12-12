@@ -62,13 +62,13 @@ void SolarSystem::Initialize() {
 
 	planets["Uranus"] = new Planet("Uranus");
 	planets["Uranus"]->SetPosition(glm::vec3(9.0f, 0.0f, 0.0f));
-	planets["Uranus"]->SetPosition(planets["Earth"]->transform.position * glm::vec3(12.20f, 0, 0));
+	planets["Uranus"]->SetPosition(planets["Earth"]->transform.position * glm::vec3(10.20f, 0, 0));
 	planets["Uranus"]->SetScale(planets["Earth"]->transform.scale * glm::vec3(4.01f * 2.0));
 	currentScene->AddEntity(planets["Uranus"]);
 
 	planets["Neptune"] = new Planet("Neptune");
 	planets["Neptune"]->SetPosition(glm::vec3(9.0f, 0.0f, 0.0f));
-	planets["Neptune"]->SetPosition(planets["Earth"]->transform.position * glm::vec3(16.05f, 0, 0));
+	planets["Neptune"]->SetPosition(planets["Earth"]->transform.position * glm::vec3(11.05f, 0, 0));
 	planets["Neptune"]->SetScale(planets["Earth"]->transform.scale * glm::vec3(3.88f * 2.0));
 	currentScene->AddEntity(planets["Neptune"]);
 	/*planets[0] = Planet("Sun");
@@ -86,6 +86,7 @@ void SolarSystem::Update() {
 }
 
 void SolarSystem::Render(Renderer* renderer) {
+
 	currentScene->Render(renderer);
 }
 

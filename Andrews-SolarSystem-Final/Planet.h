@@ -13,5 +13,6 @@ public:
 	virtual void Update() override;
 	virtual void Render(Renderer* renderer) override;
 	float deg;
+	glm::vec3 position;
 };
 
